@@ -12,9 +12,26 @@ public class Tarea {
 	private LocalDateTime fechaFin;
 	private Boolean facturada;
 	
-	public void asignarEmpleado(Empleado e) {
+	public Tarea() {
+		
+	}
+	
+	public Tarea(Integer id, String descripcion, Integer duracionEstimada) {
+		super();
+		this.id = id;
+		this.descripcion = descripcion;
+		this.duracionEstimada = duracionEstimada;
+		this.facturada = false;
+	}
+
+	public void asignarEmpleado(Empleado e) throws TareaException{
 		// si la tarea ya tiene un empleado asignado
 		// y tiene fecha de finalizado debe lanzar una excepcion
+		if(this.empleadoAsignado != null || this.getFechaFin() != null) {
+			throw new TareaException("La tarea ya finalizo o ya tiene asignado un empleado.");
+		} else {
+			this.empleadoAsignado = e;
+		}
 	}
 
 	public Integer getId() {
@@ -69,5 +86,12 @@ public class Tarea {
 		return empleadoAsignado;
 	}
 	
+	public void setEmpleadoAsignado(Empleado empleadoAsignado) {
+		this.empleadoAsignado = empleadoAsignado;
+	}
+
+	public String asCsv() {
+		return this.id + ";\"" + this.descripcion + ";\"" + this.duracionEstimada + ";\"" + this.empleadoAsignado.getCuil() + ";\"" + this.empleadoAsignado.getNombre();
+	}
 	
 }
